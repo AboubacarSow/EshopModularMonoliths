@@ -1,15 +1,18 @@
-﻿namespace Catalog.Products.Models;
+﻿using Catalog.Products.Events;
 
-internal class Product:Entity<Guid>
+namespace Catalog.Products.Models;
+
+internal class Product:Aggregate<Guid>
 {
-    public string Name { get; private set; } = default!;
-    public List<string> Category { get; private set; } = [];
-    public string Description { get; private set; } = default!;
-    public string ImageFile { get; private set; } = default!;
-    public decimal Price { get; private set; }
+    internal string Name { get; private set; } = default!;
+    internal List<string> Category { get; private set; } = [];
+    internal string Description { get; private set; } = default!;
+    internal string ImageFile { get; private set; } = default!;
+    internal decimal Price { get; private set; }
 
 
-    public static Product Create(Guid id,string name,List<string> category,string description, string imageFile,decimal price)
+    internal static Product Create(Guid id,string name,List<string> category,
+    string description, string imageFile,decimal price)
     {
         ArgumentException.ThrowIfNullOrEmpty(name);
         ArgumentOutOfRangeException.ThrowIfNegativeOrZero(price);
@@ -22,19 +25,27 @@ internal class Product:Entity<Guid>
             ImageFile = imageFile,
             Price = price
         };
+        product.AddDomainEvent(new ProductCreatedEvent(product));
         return product;
     }
-    public void Update(string name,List<string> category,string description,string imageFile,decimal price)
+    internal void Update(string name, List<string> category,
+    string description, string imageFile, decimal price)
     {
         ArgumentException.ThrowIfNullOrEmpty(name);
         ArgumentOutOfRangeException.ThrowIfNegativeOrZero(price);
 
         //Update product fields
-        Name=name;
-        Category=category;
-        Description=description;
-        ImageFile=imageFile;
-        Price=price;
+        Name = name;
+        Category = category;
+        Description = description;
+        ImageFile = imageFile;
+
+        //Verify if product's price has changed
+        if (Price != price)
+        {
+            Price = price;
+            AddDomainEvent(new ProductPriceChangedEvent(this));
+        }
 
     }
 }
