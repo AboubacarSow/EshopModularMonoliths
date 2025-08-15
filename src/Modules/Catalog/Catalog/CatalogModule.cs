@@ -1,6 +1,12 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Shared.Data;
+using Shared.Data.Seed;
+using Catalog.Data.Seed;
+using Shared.Data.Interceptors;
+using Microsoft.EntityFrameworkCore.Diagnostics;
+using System.Reflection;
 
 namespace Catalog;
 
@@ -8,11 +14,22 @@ public static class CatalogModule
 {
     public static IServiceCollection AddCatalogModule(this IServiceCollection services,IConfiguration configuration)
     {
-        var connectionString= configuration.GetConnectionString("Database");
-        services.AddDbContext<CatalogDbContext>(options =>
+        services.AddMediatR(configuration =>
         {
-            options.UseNpgsql(connectionString);
+            configuration.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());
         });
+
+        // Adding Interceptors inside of DI
+        services.AddScoped<ISaveChangesInterceptor,AuditableEntityInterceptor>();
+        services.AddScoped<ISaveChangesInterceptor,DispatchDomainEventsInterceptor>();
+
+        services.AddDbContext<CatalogDbContext>((serviceProvider,options)=>
+        {
+            // Registering Interceptors
+            options.AddInterceptors(serviceProvider.GetServices<ISaveChangesInterceptor>());  
+            options.UseNpgsql(configuration.GetConnectionString("Database"));
+        });
+        services.AddTransient<ISeeder, CatalogSeeder>();
         return services;
     }
     public static IApplicationBuilder UseCatalogModule(this IApplicationBuilder app)
@@ -20,19 +37,10 @@ public static class CatalogModule
         //This performs an auto-migration when application starts running;
 
         //We have an async method that get called inside of an non-async method: that's reason why we got here GetAwaiter() and GetResult() methods
-         InitialiseDatabaseAsync(app).GetAwaiter().GetResult();
+        // InitialiseDatabaseAsync(app).GetAwaiter().GetResult();
+        app.UseMigration<CatalogDbContext>();
         return app;
     }
 
-    private static async Task InitialiseDatabaseAsync(IApplicationBuilder app)
-    {
-        var scope = app.ApplicationServices.CreateScope();
-
-        var context= scope.ServiceProvider.GetRequiredService<CatalogDbContext>();
-
-        if(context.Database.GetPendingMigrations().Any())
-        {
-            await context.Database.MigrateAsync();
-        }
-    }
+    
 }
