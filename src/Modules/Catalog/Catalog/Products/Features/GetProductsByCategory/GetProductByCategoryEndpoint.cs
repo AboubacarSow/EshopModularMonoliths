@@ -1,8 +1,7 @@
 namespace Catalog.Products.Features.GetProductsByCategory;
 
-public record GetProductsByCategoryResponse(IEnumerable<ProductDto> Product);
+public record GetProductsByCategoryResponse(IEnumerable<ProductDto> Products);
 
-//public record GetProductByIdRequest(Guid Id);
 
 internal class GetProductByCategoryEndpoint : ICarterModule
 {
@@ -19,7 +18,7 @@ internal class GetProductByCategoryEndpoint : ICarterModule
         .Produces<GetProductsByCategoryResponse>(StatusCodes.Status200OK)
         .Produces(StatusCodes.Status400BadRequest)
         .Produces(StatusCodes.Status404NotFound)
-        .WithSummary("Get One Product By Id")
-        .WithDescription("Get One Product By Id");
+        .WithSummary("Get One Product By Category")
+        .WithDescription("Get One Product By Category");
     }
 }

@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Shared.Data;
 using Shared.Data.Seed;
@@ -17,7 +16,6 @@ public static class CatalogModule
         {
             configuration.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());
         });
-        
         // Adding Interceptors inside of DI
         services.AddScoped<ISaveChangesInterceptor,AuditableEntityInterceptor>();
         services.AddScoped<ISaveChangesInterceptor,DispatchDomainEventsInterceptor>();
