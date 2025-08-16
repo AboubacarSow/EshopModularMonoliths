@@ -7,7 +7,6 @@ using Catalog.Data.Seed;
 using Shared.Data.Interceptors;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using System.Reflection;
-
 namespace Catalog;
 
 public static class CatalogModule
@@ -18,7 +17,7 @@ public static class CatalogModule
         {
             configuration.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());
         });
-
+        
         // Adding Interceptors inside of DI
         services.AddScoped<ISaveChangesInterceptor,AuditableEntityInterceptor>();
         services.AddScoped<ISaveChangesInterceptor,DispatchDomainEventsInterceptor>();
