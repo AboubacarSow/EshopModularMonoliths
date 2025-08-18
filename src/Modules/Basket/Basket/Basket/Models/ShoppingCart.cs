@@ -7,7 +7,7 @@ public class ShoppingCart : Aggregate<Guid>
     public IReadOnlyList<ShoppingCartItem> Items => _items.AsReadOnly();
     public decimal TotalPrice => Items.Sum(i => i.Price * i.Quantity);
 
-    public ShoppingCart Create(Guid id, string userName)
+    public static ShoppingCart Create(Guid id, string userName)
     {
         //Ensure that username is not null or empty
         ArgumentException.ThrowIfNullOrEmpty(userName);
