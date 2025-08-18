@@ -1,7 +1,3 @@
-
-using Catalog.Products.Features.GetProducts;
-using Mapster;
-
 namespace Catalog.Products.Features.GetProductsByCategory;
 public record GetProductsByCategoryResult(IEnumerable<ProductDto> Products);
 public record GetProductsByCategoryQuery(string Category):IQuery<GetProductsByCategoryResult>;

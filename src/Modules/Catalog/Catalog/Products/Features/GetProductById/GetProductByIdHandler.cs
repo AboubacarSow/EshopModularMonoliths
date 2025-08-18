@@ -1,7 +1,5 @@
-
-using Mapster;
-
 namespace Catalog.Products.Features.GetProductById;
+
 public record GetProductByIdResult(ProductDto Product);
 public record GetProductByIdQuery(Guid ProductId):IQuery<GetProductByIdResult>;
 internal class GetProductByIdHandler(CatalogDbContext _dbContext)
@@ -12,7 +10,7 @@ internal class GetProductByIdHandler(CatalogDbContext _dbContext)
         //retrieve data
         var product = await _dbContext.Products
         .FindAsync([query.ProductId], cancellationToken)
-        ?? throw new Exception($"Product with Id:{query.ProductId} not found");
+        ?? throw new ProductNotFoundException(query.ProductId);
         var productdto = product.Adapt<ProductDto>();
         return new GetProductByIdResult(productdto);
     }

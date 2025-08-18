@@ -13,3 +13,7 @@ global using Microsoft.AspNetCore.Routing;
 global using Mapster;
 global using Microsoft.AspNetCore.Builder;
 global using Microsoft.AspNetCore.Http;
+global using FluentValidation;
+global using Shared.Exceptions;
+global using Catalog.Products.Exceptions;
+global using Shared.Pagination;
