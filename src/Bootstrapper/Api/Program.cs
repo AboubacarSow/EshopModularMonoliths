@@ -8,7 +8,9 @@ builder.Host.UseSerilog((context, config)=>{
 });
 
 //Add Services to the container
-builder.Services.AddCarterWithAssemblies(typeof(CatalogModule).Assembly);
+builder.Services.AddMediatorFromAssemblies(typeof(CatalogModule).Assembly, typeof(BasketModule).Assembly)
+                .AddCarterWithAssemblies(typeof(CatalogModule).Assembly,typeof(BasketModule).Assembly);
+
 
 builder.Services.AddBasketModule(builder.Configuration)
                 .AddCatalogModule(builder.Configuration)
