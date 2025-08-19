@@ -2,7 +2,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Shared.DDD;
-using System.Threading.Tasks;
 
 namespace Shared.Data.Interceptors;
 

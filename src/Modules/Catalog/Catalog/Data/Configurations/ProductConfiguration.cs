@@ -1,6 +1,4 @@
-
-
-namespace Catalog.Configurations;
+namespace Catalog.Data.Configurations;
 
 internal class ProductConfiguration : IEntityTypeConfiguration<Product>
 {
