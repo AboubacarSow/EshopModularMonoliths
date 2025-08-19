@@ -22,6 +22,7 @@ internal class AddItemIntoBasketHandler(BasketDbContext _dbContext)
     {
         //First of all, we retreive the shopping cart
         var shoppingCart= await _dbContext.ShoppingCarts
+        .Include(s=>s.Items)
         .SingleOrDefaultAsync(s=>s.UserName==query.UserName,cancellationToken)
         ?? throw new BasketNotFoundException(query.UserName);
 

@@ -1,5 +1,5 @@
 namespace Basket.Basket.Features.CreateBasket;
-public record CreateBasketRequest(ShoppingCartDto ShoppingCartDto);
+public record CreateBasketRequest(ShoppingCartDto ShoppingCart);
 
 public record CreateBasketResponse(Guid Id);
 
@@ -19,7 +19,7 @@ public class CreateBasketEndpoint : ICarterModule
             return Results.Created($"/basket/{response.Id}",response);
         })
         .WithName("CreateBasket")
-        .Produces<CreateBasketResponse>(StatusCodes.Status200OK)
+        .Produces<CreateBasketResponse>(StatusCodes.Status201Created)
         .WithSummary("Create Basket")
         .WithDescription("Create Basket");
     }

@@ -1,5 +1,6 @@
 using System.Reflection;
 using Carter;
+using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 using Shared.Behaviors;
 
@@ -40,6 +41,15 @@ public static class ServicesRegistrationExtensions
             //2. configuring loggingBehaviors
             configuration.AddOpenBehavior(typeof(LoggingBehavior<,>));
         });
+        return services;
+    }
+
+    public static IServiceCollection AddValidatorsFromAssemblies(this IServiceCollection services, params Assembly[] assemblies)
+    {
+        foreach(var assembly in assemblies)
+        {
+            services.AddValidatorsFromAssembly(assembly);
+        }
         return services;
     }
 }

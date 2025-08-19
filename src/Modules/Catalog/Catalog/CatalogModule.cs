@@ -13,19 +13,6 @@ public static class CatalogModule
 {
     public static IServiceCollection AddCatalogModule(this IServiceCollection services,IConfiguration configuration)
     {
-        //Registering mediatR to the container
-        services.AddMediatR(configuration =>
-        {
-            configuration.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());
-
-            //Configuration of pipeline behaviors
-            //1. configuring ValidationBehavior
-            configuration.AddOpenBehavior(typeof(ValidationBehavior<,>));
-            //2. configuring loggingBehaviors
-            configuration.AddOpenBehavior(typeof(LoggingBehavior<,>));
-        });
-        //Registering fluentValidation to the container
-        services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
         // Adding Interceptors inside of DI
         services.AddScoped<ISaveChangesInterceptor,AuditableEntityInterceptor>();
         services.AddScoped<ISaveChangesInterceptor,DispatchDomainEventsInterceptor>();

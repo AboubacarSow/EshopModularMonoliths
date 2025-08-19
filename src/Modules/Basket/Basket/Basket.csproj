@@ -19,7 +19,6 @@
     <Folder Include="Basket\Features\CheckoutBasket\" />
     <Folder Include="Basket\Features\DeleteBasket\" />
     <Folder Include="Basket\Features\GetBasket\" />
-    <Folder Include="Basket\Features\RemoveItemFromBasket\" />
     <Folder Include="Basket\Features\UpdateItemPriceInBasket\" />
   </ItemGroup>
 

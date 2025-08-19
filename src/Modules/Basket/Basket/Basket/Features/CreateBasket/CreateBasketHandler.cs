@@ -1,6 +1,6 @@
 namespace Basket.Basket.Features.CreateBasket;
 
-public record CreateBasketCommand(ShoppingCartDto ShoppingCartDto)
+public record CreateBasketCommand(ShoppingCartDto ShoppingCart)
 :ICommand<CreateBasketResult>;
 
 internal record CreateBasketResult(Guid Id); 
@@ -9,7 +9,7 @@ public class CreateBasketValidator:AbstractValidator<CreateBasketCommand>
 {
     public CreateBasketValidator()
     {
-        RuleFor(s => s.ShoppingCartDto.UserName).NotEmpty().WithMessage("Username can not be empty or null");
+        RuleFor(s => s.ShoppingCart.UserName).NotEmpty().WithMessage("Username can not be empty or null");
     }
 }
 
@@ -17,7 +17,7 @@ internal class CreateBasketHandler(BasketDbContext _dbContext) : ICommandHandler
 {
     public async Task<CreateBasketResult> Handle(CreateBasketCommand command, CancellationToken cancellationToken)
     {
-        var shoppingCart = CreateNewShoppingCart(command.ShoppingCartDto);
+        var shoppingCart = CreateNewShoppingCart(command.ShoppingCart);
 
         _dbContext.ShoppingCarts.Add(shoppingCart);
         await _dbContext.SaveChangesAsync(cancellationToken);

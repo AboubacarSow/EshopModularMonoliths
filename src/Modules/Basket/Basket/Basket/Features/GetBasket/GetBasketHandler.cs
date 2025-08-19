@@ -1,6 +1,3 @@
-
-using Mapster;
-
 namespace Basket.Basket.Features.GetBasket;
 internal record GetBasketQuery(string UserName):IQuery<GetBasketResult>;
 
@@ -13,12 +10,13 @@ internal record GetBasketHandler(BasketDbContext _dbContext) : IQueryHandler<Get
     {
         var shoppingCarts = await _dbContext.ShoppingCarts
         .AsNoTracking()
-        .Include(s=>s.Items)
-        .SingleOrDefaultAsync(s=>s.UserName==query.UserName,
+        .Include(s => s.Items)
+        .SingleOrDefaultAsync(s => s.UserName == query.UserName,
                             cancellationToken)
         ?? throw new BasketNotFoundException(query.UserName);
-                    
-        var dto= shoppingCarts.Adapt<ShoppingCartDto>();
+
+        var dto = shoppingCarts.Adapt<ShoppingCartDto>();
         return new GetBasketResult(dto);
     }
+
 }

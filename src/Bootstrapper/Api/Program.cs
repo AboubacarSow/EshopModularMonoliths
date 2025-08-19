@@ -1,5 +1,7 @@
 
 
+using System.Reflection;
+
 var builder = WebApplication.CreateBuilder(args);
 
 //Configuration of serilog
@@ -8,8 +10,10 @@ builder.Host.UseSerilog((context, config)=>{
 });
 
 //Add Services to the container
-builder.Services.AddMediatorFromAssemblies(typeof(CatalogModule).Assembly, typeof(BasketModule).Assembly)
-                .AddCarterWithAssemblies(typeof(CatalogModule).Assembly,typeof(BasketModule).Assembly);
+Assembly[] assemblies = [typeof(CatalogModule).Assembly, typeof(BasketModule).Assembly];
+builder.Services.AddMediatorFromAssemblies(assemblies)
+                .AddValidatorsFromAssemblies(assemblies)
+                .AddCarterWithAssemblies(assemblies);
 
 
 builder.Services.AddBasketModule(builder.Configuration)
