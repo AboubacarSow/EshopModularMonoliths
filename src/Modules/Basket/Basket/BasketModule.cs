@@ -1,5 +1,6 @@
 ﻿using System.Net.Security;
 using Basket.Data;
+using Basket.Data.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Configuration;
@@ -13,6 +14,7 @@ public static class BasketModule
 {
     public static IServiceCollection AddBasketModule(this IServiceCollection services,IConfiguration configuration)
     {
+        services.AddScoped<IBasketRepository, BasketRepository>();
         services.AddScoped<ISaveChangesInterceptor, AuditableEntityInterceptor>();
         services.AddScoped<ISaveChangesInterceptor, DispatchDomainEventsInterceptor>();
         services.AddDbContext<BasketDbContext>((serviceProvider,options) =>

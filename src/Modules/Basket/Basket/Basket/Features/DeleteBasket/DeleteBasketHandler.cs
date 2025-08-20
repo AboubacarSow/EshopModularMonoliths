@@ -1,22 +1,15 @@
 
+using Basket.Data.Repositories;
+
 namespace Basket.Basket.Features.DeleteBasket;
 public record DeleteBasketCommand(string UserName):ICommand<DeleteBasketResult>;
 public record DeleteBasketResult(bool IsSuccessed);
 
-internal class DeleteBasketHandler(BasketDbContext _dbContext) : ICommandHandler<DeleteBasketCommand, DeleteBasketResult>
+internal class DeleteBasketHandler(IBasketRepository _basketRepository) : ICommandHandler<DeleteBasketCommand, DeleteBasketResult>
 {
     public async Task<DeleteBasketResult> Handle(DeleteBasketCommand command, CancellationToken cancellationToken)
-    {
-        var shoppingCart = await _dbContext
-            .ShoppingCarts.FindAsync([command.UserName], cancellationToken)
-            ?? throw new BasketNotFoundException(command.UserName);
-            
-        _dbContext.ShoppingCarts.Remove(shoppingCart);
-
-        await _dbContext.SaveChangesAsync();
-
+    { 
+        await _basketRepository.DeleteBasket(command.UserName, cancellationToken);
         return new DeleteBasketResult(true);
-        
-
     }
 }
