@@ -28,7 +28,7 @@ internal class AddItemIntoBasketHandler(IBasketRepository _basketRepository)
         shoppingCart.AddItem(query.ShoppingCartItemDto.ProductId, query.ShoppingCartItemDto.Quantity,
          query.ShoppingCartItemDto.Color, query.ShoppingCartItemDto.Price, query.ShoppingCartItemDto.ProductName);
 
-        await _basketRepository.SaveChangesAsync(cancellationToken);
+        await _basketRepository.SaveChangesAsync(query.UserName,cancellationToken);
 
         return new AddItemIntoBasketResult(shoppingCart.Id);
     }

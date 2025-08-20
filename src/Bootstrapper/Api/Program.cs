@@ -20,6 +20,12 @@ builder.Services.AddBasketModule(builder.Configuration)
                 .AddCatalogModule(builder.Configuration)
                 .AddOrderingModule();
 
+
+builder.Services.AddStackExchangeRedisCache(options =>
+{
+    options.Configuration=builder.Configuration.GetConnectionString("Redis");
+});
+
 builder.Services.AddProblemDetails();
 builder.Services.AddExceptionHandler<CustomExceptionHandler>();
 
