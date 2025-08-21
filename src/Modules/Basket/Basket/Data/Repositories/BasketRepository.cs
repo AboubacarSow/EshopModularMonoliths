@@ -1,3 +1,8 @@
+using Basket.Basket.Features.UpdateItemPriceInBasket;
+using Microsoft.EntityFrameworkCore;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
+using System.Threading;
+
 namespace Basket.Data.Repositories;
 
 internal class BasketRepository(BasketDbContext _dbContext) : IBasketRepository
@@ -33,9 +38,37 @@ internal class BasketRepository(BasketDbContext _dbContext) : IBasketRepository
         ;
         return shoppingCart ?? throw new BasketNotFoundException(userName);
     }
+    public async Task<bool> UpdateItemPriceInBasket(Guid productId,decimal price,CancellationToken cancellationToken=default)
+    {
 
-    public async Task<int> SaveChangesAsync(string? userName=null,CancellationToken cancellationToken = default)
+        var shoppingCartItems = await _dbContext.ShoppingCartItems
+           .Where(i => i.ProductId == productId).ToListAsync(cancellationToken);
+        if (!shoppingCartItems.Any())
+            return false;
+        shoppingCartItems.ForEach(item =>
+        {
+            item.UpdatePrice(price);
+        });
+        return true;
+    } 
+
+    public async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default, params string?[] userNames)
     {
         return await _dbContext.SaveChangesAsync(cancellationToken);
+    }
+
+    public async Task<List<string>> GetBasketUserNamesByItemId(Guid ProductId, bool trackChanges, CancellationToken cancellationToken = default)
+    {
+        var baskets = !trackChanges ?
+            await _dbContext.ShoppingCarts.AsNoTracking().ToListAsync(cancellationToken) :
+            await _dbContext.ShoppingCarts.ToListAsync(cancellationToken);
+        var keys = new List<string>(); 
+        foreach(var basket in baskets)
+        {
+            var key = basket.GetBasketKeyByItemProductId(ProductId);
+            if (!string.IsNullOrEmpty(key))
+                keys.Add(key);
+        }
+        return keys;
     }
 }

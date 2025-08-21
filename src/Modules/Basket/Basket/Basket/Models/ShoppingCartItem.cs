@@ -34,4 +34,10 @@ public class ShoppingCartItem: Entity<Guid>
         Color = color;
         ProductName = productName;
     }
+
+    internal void UpdatePrice(decimal price)
+    {
+        ArgumentOutOfRangeException.ThrowIfNegativeOrZero(price);
+        this.Price= price;  
+    }
 }

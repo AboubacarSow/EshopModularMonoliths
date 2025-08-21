@@ -19,7 +19,7 @@ public class AddItemIntoBasketValidator:AbstractValidator<AddItemIntoBasketComma
     }
 }
 
-internal class AddItemIntoBasketHandler(IBasketRepository _basketRepository,ISender sender,BasketDbContext dbContext)
+internal class AddItemIntoBasketHandler(IBasketRepository _basketRepository,ISender sender)
 : ICommandHandler<AddItemIntoBasketCommand, AddItemIntoBasketResult>
 {
     public async Task<AddItemIntoBasketResult> Handle(AddItemIntoBasketCommand command, CancellationToken cancellationToken)
@@ -36,7 +36,7 @@ internal class AddItemIntoBasketHandler(IBasketRepository _basketRepository,ISen
             result.Product.Name);
 
         
-        var resultValue= await _basketRepository.SaveChangesAsync(command.UserName,cancellationToken);
+        var resultValue= await _basketRepository.SaveChangesAsync(cancellationToken,command.UserName);
         if(resultValue==0)
             return new AddItemIntoBasketResult(false,shoppingCart.Id);
 

@@ -35,7 +35,7 @@ internal class CachedBasketRepository(IBasketRepository basketRepository,IDistri
             return await basketRepository.GetBasket(userName, true, cancellationToken);
 
         //check if the data is in the cache
-       
+        await cache.RemoveAsync(userName,cancellationToken) ;    
         var cachedBasket = await cache.GetStringAsync(userName, cancellationToken);
         if (!string.IsNullOrEmpty(cachedBasket))
         {
@@ -48,13 +48,27 @@ internal class CachedBasketRepository(IBasketRepository basketRepository,IDistri
         return basket;
     }
 
-    
-
-    public async Task<int> SaveChangesAsync(string? userName, CancellationToken cancellationToken = default)
+    public async Task<List<string>> GetBasketUserNamesByItemId(Guid ProductId, bool trackChanges, CancellationToken cancellationToken = default)
     {
-        var result=await basketRepository.SaveChangesAsync(userName, cancellationToken);
-        if (!string.IsNullOrEmpty(userName)) await cache.RemoveAsync(userName, cancellationToken);
+        return await basketRepository.GetBasketUserNamesByItemId(ProductId, trackChanges, cancellationToken);
+    }
 
+    public async Task<int> SaveChangesAsync( CancellationToken cancellationToken = default,params string?[] userNames)
+    {
+        var result=await basketRepository.SaveChangesAsync(cancellationToken,userNames);
+        if (userNames is not null)
+        {
+            foreach (var userName in userNames)
+            {
+                await cache.RemoveAsync(userName!, cancellationToken);
+            }
+                       
+        }
         return result;
+    }
+
+    public async Task<bool> UpdateItemPriceInBasket(Guid productId, decimal price, CancellationToken cancellationToken = default)
+    {
+        return await basketRepository.UpdateItemPriceInBasket(productId, price, cancellationToken);
     }
 }
