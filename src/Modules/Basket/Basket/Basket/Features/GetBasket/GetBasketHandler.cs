@@ -1,4 +1,5 @@
 using Basket.Data.Repositories;
+using Shared.Contracts.CQRS;
 
 namespace Basket.Basket.Features.GetBasket;
 internal record GetBasketQuery(string UserName):IQuery<GetBasketResult>;

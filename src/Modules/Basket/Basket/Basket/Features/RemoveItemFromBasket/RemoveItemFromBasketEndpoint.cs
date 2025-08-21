@@ -2,7 +2,7 @@
 
 namespace Basket.Basket.Features.RemoveItemFromBasket;
 
-public record RemoveItemFromBasketResponse(Guid Id);
+public record RemoveItemFromBasketResponse(bool IsSuccessed, Guid Id);
 
 public record RemoveItemFromBasketRequest(string UserName,Guid ProductId);
 public class RemoveItemFromBasketEndpoint : ICarterModule

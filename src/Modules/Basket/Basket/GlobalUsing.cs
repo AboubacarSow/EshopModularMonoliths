@@ -3,7 +3,7 @@ global using Basket.Basket.Models;
 global using Microsoft.EntityFrameworkCore;
 global using Microsoft.EntityFrameworkCore.Metadata.Builders;
 global using Basket.Basket.Dtos;
-global using Shared.CQRS;
+global using Shared.Contracts.CQRS;
 global using Basket.Data;
 global using FluentValidation;
 global using Shared.Exceptions;

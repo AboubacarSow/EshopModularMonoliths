@@ -34,7 +34,7 @@ internal class BasketRepository(BasketDbContext _dbContext) : IBasketRepository
         return shoppingCart ?? throw new BasketNotFoundException(userName);
     }
 
-    public async Task<int> SaveChangesAsync(string? userName,CancellationToken cancellationToken = default)
+    public async Task<int> SaveChangesAsync(string? userName=null,CancellationToken cancellationToken = default)
     {
         return await _dbContext.SaveChangesAsync(cancellationToken);
     }

@@ -1,10 +1,12 @@
 
+using System.Globalization;
 using Basket.Data.Repositories;
+using Catalog.Contracts.Products.Features.GetProductById;
 
 namespace Basket.Basket.Features.AddItemIntoBasket;
 public record AddItemIntoBasketCommand(string UserName,ShoppingCartItemDto ShoppingCartItemDto)
 :ICommand<AddItemIntoBasketResult>;
-public record AddItemIntoBasketResult(Guid Id);
+public record AddItemIntoBasketResult(bool IsSuccessed,Guid Id);
 
 public class AddItemIntoBasketValidator:AbstractValidator<AddItemIntoBasketCommand>{
 
@@ -17,19 +19,27 @@ public class AddItemIntoBasketValidator:AbstractValidator<AddItemIntoBasketComma
     }
 }
 
-internal class AddItemIntoBasketHandler(IBasketRepository _basketRepository)
+internal class AddItemIntoBasketHandler(IBasketRepository _basketRepository,ISender sender,BasketDbContext dbContext)
 : ICommandHandler<AddItemIntoBasketCommand, AddItemIntoBasketResult>
 {
-    public async Task<AddItemIntoBasketResult> Handle(AddItemIntoBasketCommand query, CancellationToken cancellationToken)
+    public async Task<AddItemIntoBasketResult> Handle(AddItemIntoBasketCommand command, CancellationToken cancellationToken)
     {
         //First of all, we retreive the shopping cart
-        var shoppingCart = await _basketRepository.GetBasket(query.UserName, false, cancellationToken);
+        var shoppingCart = await _basketRepository.GetBasket(command.UserName, true, cancellationToken);
 
-        shoppingCart.AddItem(query.ShoppingCartItemDto.ProductId, query.ShoppingCartItemDto.Quantity,
-         query.ShoppingCartItemDto.Color, query.ShoppingCartItemDto.Price, query.ShoppingCartItemDto.ProductName);
+        var result = await sender.Send(new GetProductByIdQuery(command.ShoppingCartItemDto.ProductId),cancellationToken);
 
-        await _basketRepository.SaveChangesAsync(query.UserName,cancellationToken);
+        shoppingCart.AddItem(command.ShoppingCartItemDto.ProductId,
+            command.ShoppingCartItemDto.Quantity,
+            command.ShoppingCartItemDto.Color,
+            result.Product.Price,
+            result.Product.Name);
 
-        return new AddItemIntoBasketResult(shoppingCart.Id);
+        
+        var resultValue= await _basketRepository.SaveChangesAsync(command.UserName,cancellationToken);
+        if(resultValue==0)
+            return new AddItemIntoBasketResult(false,shoppingCart.Id);
+
+        return new AddItemIntoBasketResult(true,shoppingCart.Id);
     }
 }

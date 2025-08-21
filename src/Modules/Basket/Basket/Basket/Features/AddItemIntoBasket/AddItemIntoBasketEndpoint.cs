@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Basket.Basket.Features.AddItemIntoBasket;
 
-public record AddItemIntoBasketResponse(Guid Id);
+public record AddItemIntoBasketResponse(bool IsSuccessed, Guid Id);
 public record AddItemIntoBasketRequest(ShoppingCartItemDto ShoppingCartItemDto);
 
 public class AddItemIntoBasketEndpoint : ICarterModule
