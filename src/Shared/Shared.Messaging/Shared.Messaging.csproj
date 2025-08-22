@@ -12,6 +12,7 @@
 
   <ItemGroup>
     <PackageReference Include="MassTransit" Version="8.5.2" />
+    <PackageReference Include="MassTransit.RabbitMq" Version="8.5.2" />
   </ItemGroup>
 
 </Project>

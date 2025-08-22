@@ -60,8 +60,8 @@ internal class BasketRepository(BasketDbContext _dbContext) : IBasketRepository
     public async Task<List<string>> GetBasketUserNamesByItemId(Guid ProductId, bool trackChanges, CancellationToken cancellationToken = default)
     {
         var baskets = !trackChanges ?
-            await _dbContext.ShoppingCarts.AsNoTracking().ToListAsync(cancellationToken) :
-            await _dbContext.ShoppingCarts.ToListAsync(cancellationToken);
+            await _dbContext.ShoppingCarts.AsNoTracking().Include(i=>i.Items).ToListAsync(cancellationToken) :
+            await _dbContext.ShoppingCarts.Include(i=>i.Items).ToListAsync(cancellationToken);
         var keys = new List<string>(); 
         foreach(var basket in baskets)
         {

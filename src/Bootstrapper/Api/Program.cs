@@ -11,7 +11,7 @@ Assembly[] assemblies = [typeof(CatalogModule).Assembly, typeof(BasketModule).As
 builder.Services.AddMediatorFromAssemblies(assemblies)
                 .AddValidatorsFromAssemblies(assemblies)
                 .AddCarterWithAssemblies(assemblies)
-                .AddMassTransitWitAssemblies(assemblies);
+                .AddMassTransitWitAssemblies(builder.Configuration,assemblies);
 
 
 

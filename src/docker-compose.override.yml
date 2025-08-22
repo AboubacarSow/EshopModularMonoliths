@@ -25,6 +25,34 @@ services:
    ports:
     - '5341:5341'
     - '9091:80'
+
+  messagebus:
+   container_name: messagebus
+   hostname: ecommerce-mq
+   environment:
+    - RABBITMQ_DEFAULT_USER=guest
+    - RABBITMQ_DEFAULT_PASSWORD=guest
+   restart: always
+   ports:
+   - '5672:5672'
+   - '15672:15672'
+
+
+  identity:
+   container_name: identity
+   environment:
+   - KEYCLOAK_ADMIN=admin
+   - KEYCLOAK_ADMIN_PASSWORD=admin
+   - KC_DB=postgres
+   - KC_DB_URL=jdbc:postgresql://eshopdb:5432/EShopDb?currentSchema=identity
+   - KC_DB_USERNAME=postgres
+   - KC_DB_PASSWORD=postgres
+   restart: always
+   ports: 
+   - "9090:8080"
+   command:
+   - start-dev
+   
   
     
 
