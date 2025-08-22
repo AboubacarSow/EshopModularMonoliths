@@ -1,3 +1,5 @@
+using Keycloak.AuthServices.Authentication;
+
 var builder = WebApplication.CreateBuilder(args);
 
 //Configuration of serilog
@@ -13,6 +15,8 @@ builder.Services.AddMediatorFromAssemblies(assemblies)
                 .AddCarterWithAssemblies(assemblies)
                 .AddMassTransitWitAssemblies(builder.Configuration,assemblies);
 
+builder.Services.AddKeycloakWebApiAuthentication(builder.Configuration); 
+builder.Services.AddAuthorization(); 
 
 
 builder.Services.AddBasketModule(builder.Configuration)
@@ -38,5 +42,8 @@ app.UseBasketModule()
 app.MapCarter();
 app.UseSerilogRequestLogging();
 app.UseExceptionHandler();
+
+app.UseAuthentication(); 
+app.UseAuthorization(); 
 
 app.Run();
