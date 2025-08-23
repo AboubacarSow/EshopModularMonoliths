@@ -5,8 +5,6 @@ using Shared.Data.Seed;
 using Catalog.Data.Seed;
 using Shared.Data.Interceptors;
 using Microsoft.EntityFrameworkCore.Diagnostics;
-using System.Reflection;
-using Shared.Behaviors;
 namespace Catalog;
 
 public static class CatalogModule
