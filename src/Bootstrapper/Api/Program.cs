@@ -8,7 +8,8 @@ builder.Host.UseSerilog((context, config)=>{
 });
 
 //Add Services to the container
-Assembly[] assemblies = [typeof(CatalogModule).Assembly, typeof(BasketModule).Assembly];
+Assembly[] assemblies = [typeof(CatalogModule).Assembly, typeof(BasketModule).Assembly,
+typeof(OrderingModule).Assembly];
 
 builder.Services.AddMediatorFromAssemblies(assemblies)
                 .AddValidatorsFromAssemblies(assemblies)
@@ -21,7 +22,7 @@ builder.Services.AddAuthorization();
 
 builder.Services.AddBasketModule(builder.Configuration)
                 .AddCatalogModule(builder.Configuration)
-                .AddOrderingModule();
+                .AddOrderingModule(builder.Configuration);
 
 
 builder.Services.AddStackExchangeRedisCache(options =>
