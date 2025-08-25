@@ -16,4 +16,4 @@ public record PaymentDto(string CardName,
         string CardNumber,string Expiration, 
         string Cvv,int PaymentMethod);
 
-public record OrderItemDto(Guid ProductId, int Quantity, decimal Price);
+public record OrderItemDto(Guid OrderId,Guid ProductId, int Quantity, decimal Price);

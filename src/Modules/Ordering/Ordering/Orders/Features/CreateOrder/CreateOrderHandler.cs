@@ -1,6 +1,6 @@
 namespace Ordering.Orders.Features.CreateOrder;
 
-public record CreateOrderCommand(OrderForCreationDto Order):ICommand<CreateOrderResult>;
+public record CreateOrderCommand(OrderDto Order):ICommand<CreateOrderResult>;
 public record CreateOrderResult(Guid OrderId);
 
 public class CreateOrderValidator:AbstractValidator<CreateOrderCommand>
@@ -32,7 +32,7 @@ internal class CreateOrderHandler(OrderingDbContext _dbContext) : ICommandHandle
         return new CreateOrderResult(order.Id);
     }
 
-    private static Order CreateOrder(OrderForCreationDto order)
+    private static Order CreateOrder(OrderDto order)
     {
         // Map OrderForCreationDto to Order entity
         var shippingAddress = Address.Of(
