@@ -1,5 +1,6 @@
 ﻿using System.Net.Security;
 using Basket.Data;
+using Basket.Data.Processors;
 using Basket.Data.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore.Diagnostics;
@@ -33,6 +34,8 @@ public static class BasketModule
             options.AddInterceptors(serviceProvider.GetServices<ISaveChangesInterceptor>());
             options.UseNpgsql(configuration.GetConnectionString("Database"));
         });
+
+        services.AddHostedService<OutBoxProcessor>();
         return services;
     }
     public static IApplicationBuilder UseBasketModule(this IApplicationBuilder app)

@@ -1,7 +1,4 @@
 using Basket.Data.Repositories;
-using System.Security.Cryptography.Xml;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
-using System.Threading;
 
 namespace Basket.Basket.Features.UpdateItemPriceInBasket;
 public record UpdateItemPriceInBasketCommand(Guid ProductId,decimal Price):ICommand<UpdateItemPriceInBasketResult>;

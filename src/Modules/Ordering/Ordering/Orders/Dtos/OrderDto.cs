@@ -7,13 +7,6 @@ public record OrderDto(Guid Id,
         AddressDto BillingAddress,
         PaymentDto Payment,
         List<OrderItemDto> Items);
-
-public record OrderForCreationDto(Guid CustomerId,
-        string OrderName,
-        AddressDto ShippingAddress,
-        AddressDto BillingAddress,
-        PaymentDto Payment,
-        List<OrderItemDto> Items);
 public record AddressDto(string FirstName, 
         string LastName,string EmailAddress,
         string AddressLine,string Country,

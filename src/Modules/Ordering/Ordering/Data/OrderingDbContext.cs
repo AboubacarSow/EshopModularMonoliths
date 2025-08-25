@@ -7,6 +7,7 @@ namespace Ordering.Data;
 internal class OrderingDbContext : DbContext
 {
     internal DbSet<Order> Orders => Set<Order>();
+    internal DbSet<OrderItem> OrderItems => Set<OrderItem>();
     public OrderingDbContext(DbContextOptions<OrderingDbContext> options) : base(options) { }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

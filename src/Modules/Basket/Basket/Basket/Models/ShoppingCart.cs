@@ -9,8 +9,8 @@ public class ShoppingCart : Aggregate<Guid>
 
     public string GetBasketKeyByItemProductId(Guid productId)
     {
-       var items=_items.FirstOrDefault(i => i.ProductId == productId);
-       if(items==null)
+        var items = _items.FirstOrDefault(i => i.ProductId == productId);
+        if (items == null)
             return string.Empty;
         return this.UserName;
     }
@@ -33,16 +33,19 @@ public class ShoppingCart : Aggregate<Guid>
         ArgumentOutOfRangeException.ThrowIfNegativeOrZero(quantity);
 
         var existingItem = Items.FirstOrDefault(i => i.ProductId == productId);
-        if (existingItem is not null) {
+        if (existingItem is not null)
+        {
             existingItem.Quantity += quantity;
-        } else {
+        }
+        else
+        {
             var item = new ShoppingCartItem(Id, productId, productName, color, price, quantity);
             _items.Add(item);
         }
     }
     public void RemoveItem(Guid productId)
     {
-        var item= Items.FirstOrDefault(i=>i.ProductId==productId);
+        var item = Items.FirstOrDefault(i => i.ProductId == productId);
         if (item is not null) _items.Remove(item);
     }
 
