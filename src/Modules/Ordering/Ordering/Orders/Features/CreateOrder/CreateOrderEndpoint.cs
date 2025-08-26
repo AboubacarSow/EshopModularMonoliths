@@ -1,7 +1,7 @@
 
 
 namespace Ordering.Orders.Features.CreateOrder;
-internal record CreateOrderRequest(OrderForCreationDto Order);
+internal record CreateOrderRequest(OrderDto Order);
 internal record CreateOrderResponse(Guid OrderId);
 
 internal class CreateOrderEndpoint : ICarterModule
