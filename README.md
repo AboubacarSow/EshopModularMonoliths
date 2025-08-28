@@ -80,11 +80,17 @@ The project relies on several backing services running inside **Docker Desktop**
 
 ---
 
-## 🐳 Running the Project
+## 🛠️ Getting Started
+### 🐳 Running the Project
 1. Clone the repository  
    ```bash
-   git clone https://github.com/AboubacarSow/EShopModularMonolith.git
+      git clone https://github.com/AboubacarSow/EShopModularMonolith.git
+    ```
 2. Ensure **Docker Desktop** is installed and running  
 3. Start services with:  
    ```bash
-   docker-compose up -d
+      docker-compose up -d
+    ```
+    
+## 📄 License
+This project is licensed under the MIT License. See the [LICENSE](LICENSE.txt) file for details.
